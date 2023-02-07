@@ -1,0 +1,64 @@
+import express from "express";
+import connection from "./db/connection.js";
+import { PORT } from "./config.js";
+import authRouter from "./routes/authRouter.js";
+import cookieParser from "cookie-parser";
+import boardRouter from "./routes/boardRouter.js";
+import cors from "cors";
+import userRouter from "./routes/userRouter.js";
+import taskRouter from "./routes/taskRoutes.js";
+import columnRouter from "./routes/columnRouter.js";
+import { FRONTEND_DEV_URL, FRONTEND_PROD_URL } from "./config.js";
+// * connection to the mongodb
+connection();
+
+const app = express();
+const port = PORT || 3000;
+
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? FRONTEND_PROD_URL
+        : FRONTEND_DEV_URL,
+    methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
+    preflightContinue: false,
+    allowedHeaders: ["Content-Type", "authorization"],
+  })
+);
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(
+  express.json({
+    limit: "10mb",
+  })
+);
+app.use(cookieParser());
+
+app.options(
+  "*",
+  cors({
+    credentials: true,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? FRONTEND_PROD_URL
+        : FRONTEND_DEV_URL,
+    methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
+    preflightContinue: false,
+    allowedHeaders: ["Content-Type", "authorization"],
+  })
+);
+
+app.use("/api/auth", authRouter);
+app.use("/api/board", boardRouter);
+app.use("/api/user", userRouter);
+app.use("/api/task", taskRouter);
+app.use("/api/column", columnRouter);
+
+app.get("/", (req, res) => {
+  res.send("hellooo from server ");
+});
+
+app.listen(port, () => {
+  console.log(`listening on port : ${port}`);
+});
