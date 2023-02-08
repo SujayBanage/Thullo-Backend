@@ -5,6 +5,7 @@ const MONGO_URI =
   process.env.NODE_ENV == "development"
     ? process.env.MONGO_URI_DEV
     : process.env.MONGO_URI_PROD;
+
 const PORT = process.env.PORT;
 const JWT_ACCESS_KEY = process.env.JWT_ACCESS_KEY;
 const JWT_REFRESH_KEY = process.env.JWT_REFRESH_KEY;
@@ -15,6 +16,7 @@ const FRONTEND_URL =
   process.env.NODE_ENV === "production"
     ? process.env.FRONTEND_PROD_URL
     : process.env.FRONTEND_DEV_URL;
+
 export {
   MONGO_URI,
   PORT,

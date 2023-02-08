@@ -13,6 +13,8 @@ import { FRONTEND_URL } from "./config.js";
 const app = express();
 const port = PORT || 3000;
 
+console.log("frontend url is : ", FRONTEND_URL);
+
 app.use(
   cors({
     credentials: true,

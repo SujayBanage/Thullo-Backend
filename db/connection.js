@@ -7,11 +7,7 @@ mongoose.set("strictQuery", false);
 
 const connection = async () => {
   try {
-    const conn = await mongoose.connect(MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
+    const conn = await mongoose.connect(MONGO_URI);
   } catch (err) {
     console.log(err);
   }
