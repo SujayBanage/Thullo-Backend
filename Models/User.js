@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: [true, "user must have a username"],
-      validate: [validator.isAlpha, "username must only contains characters"],
+      validate: [
+        validator.isAlphanumeric,
+        "username must only contains characters",
+      ],
       index: true,
     },
     email: {

@@ -2,6 +2,11 @@ import User from "../Models/User.js";
 
 export const getUsers = async (req, res) => {
   const { username } = req.query;
+  if (username === req.user.username) {
+    return res.status(403).send({
+      message: "Board Admin Cannot Be Added To Board Again",
+    });
+  }
   try {
     const users = await User.find(
       { $text: { $search: username, $caseSensitive: false } },
