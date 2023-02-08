@@ -11,9 +11,10 @@ const JWT_REFRESH_KEY = process.env.JWT_REFRESH_KEY;
 const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_KEY = process.env.CLOUDINARY_KEY;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
-const FRONTEND_DEV_URL = process.env.FRONTEND_DEV_URL;
-const FRONTEND_PROD_URL = process.env.FRONTEND_PROD_URL;
-
+const FRONTEND_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_PROD_URL
+    : process.env.FRONTEND_DEV_URL;
 export {
   MONGO_URI,
   PORT,
@@ -22,6 +23,5 @@ export {
   CLOUDINARY_API_SECRET,
   CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_KEY,
-  FRONTEND_DEV_URL,
-  FRONTEND_PROD_URL,
+  FRONTEND_URL,
 };

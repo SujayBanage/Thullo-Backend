@@ -8,7 +8,7 @@ import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import taskRouter from "./routes/taskRoutes.js";
 import columnRouter from "./routes/columnRouter.js";
-import { FRONTEND_DEV_URL, FRONTEND_PROD_URL } from "./config.js";
+import { FRONTEND_URL } from "./config.js";
 
 const app = express();
 const port = PORT || 3000;
@@ -16,10 +16,7 @@ const port = PORT || 3000;
 app.use(
   cors({
     credentials: true,
-    origin:
-      process.env.NODE_ENV === "production"
-        ? FRONTEND_PROD_URL
-        : FRONTEND_DEV_URL,
+    origin: FRONTEND_URL,
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: false,
     allowedHeaders: ["Content-Type", "authorization"],
@@ -37,10 +34,7 @@ app.options(
   "*",
   cors({
     credentials: true,
-    origin:
-      process.env.NODE_ENV === "production"
-        ? FRONTEND_PROD_URL
-        : FRONTEND_DEV_URL,
+    origin: FRONTEND_URL,
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: false,
     allowedHeaders: ["Content-Type", "authorization"],
