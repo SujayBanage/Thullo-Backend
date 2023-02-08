@@ -9,8 +9,6 @@ import userRouter from "./routes/userRouter.js";
 import taskRouter from "./routes/taskRoutes.js";
 import columnRouter from "./routes/columnRouter.js";
 import { FRONTEND_DEV_URL, FRONTEND_PROD_URL } from "./config.js";
-// * connection to the mongodb
-connection();
 
 const app = express();
 const port = PORT || 3000;
@@ -59,6 +57,8 @@ app.get("/", (req, res) => {
   res.send("hellooo from server ");
 });
 
-app.listen(port, () => {
-  console.log(`listening on port : ${port}`);
+connection().then(() => {
+  app.listen(port, () => {
+    console.log(`listening on port : ${port}`);
+  });
 });

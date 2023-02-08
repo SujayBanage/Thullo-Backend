@@ -1,21 +1,20 @@
-import { connect, set } from "mongoose";
+import mongoose from "mongoose";
 import { MONGO_URI } from "../config.js";
 
 console.log(MONGO_URI);
 
-set("strictQuery", false);
+mongoose.set("strictQuery", false);
 
-const connection = () => {
-  connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then((res) => {
-      console.log("connected to mongodb!!");
-    })
-    .catch((err) => {
-      console.log(err);
+const connection = async () => {
+  try {
+    const conn = await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
+
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default connection;
