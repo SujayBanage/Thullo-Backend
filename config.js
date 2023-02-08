@@ -1,8 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log("node env is : ", process.env.NODE_ENV);
+
 const MONGO_URI =
-  process.env.NODE_ENV == "development"
+  process.env.NODE_ENV === "development"
     ? process.env.MONGO_URI_DEV
     : process.env.MONGO_URI_PROD;
 
