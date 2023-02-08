@@ -53,8 +53,12 @@ app.get("/", (req, res) => {
   res.send("hellooo from server ");
 });
 
-connection().then(() => {
-  app.listen(port, () => {
-    console.log(`listening on port : ${port}`);
+connection()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`listening on port : ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
