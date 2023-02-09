@@ -2,7 +2,7 @@ import User from "../Models/User.js";
 
 export const getUsers = async (req, res) => {
   const { username } = req.query;
-  if (username === req.user.username) {
+  if (username.toLowerCase() === req.user.username.toLowerCase()) {
     return res.status(403).send({
       message: "Board Admin Cannot Be Added To Board Again",
     });
