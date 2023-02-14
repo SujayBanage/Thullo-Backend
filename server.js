@@ -24,6 +24,7 @@ const io = new Server(httpServer, {
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: true,
   },
+  transports: ["websocket"],
 });
 
 app.use(
