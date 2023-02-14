@@ -16,7 +16,9 @@ const userSignup = async (req, res) => {
   }
 
   try {
-    const userExists = await User.findOne({ email: email });
+    const userExists = await User.findOne({
+      $text: { $search: email, $caseSensitive: false },
+    });
 
     if (userExists) {
       return res.status(400).send({
@@ -94,7 +96,7 @@ const userLogin = async (req, res) => {
   let user;
   try {
     user = await User.findOne({
-      email,
+      $text: { $search: email, $caseSensitive: false },
     });
 
     if (!user) {

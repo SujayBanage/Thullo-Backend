@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
       require: [true, "user must have a email"],
       unique: [true, "user email must be unique"],
       validate: [validator.isEmail, "user must provide proper email"],
+      index: true,
     },
     profileImage: {
       type: String,
@@ -42,6 +43,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({
   username: "text",
+  email: "text",
 });
 
 userSchema.pre("save", async function (req, res, next) {

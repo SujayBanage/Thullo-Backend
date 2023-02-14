@@ -9,11 +9,21 @@ import userRouter from "./routes/userRouter.js";
 import taskRouter from "./routes/taskRoutes.js";
 import columnRouter from "./routes/columnRouter.js";
 import { FRONTEND_URL } from "./config.js";
-
+import { Server } from "socket.io";
+import { createServer } from "http";
+import socketHanlder from "./socket.io.handlers.js";
 const app = express();
+const httpServer = createServer(app);
 const port = PORT || 3000;
 
 console.log("frontend url is : ", FRONTEND_URL);
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(
   cors({
@@ -55,10 +65,19 @@ app.get("/", (req, res) => {
 
 connection()
   .then(() => {
-    app.listen(port, () => {
+    httpServer.listen(port, () => {
       console.log(`listening on port : ${port}`);
     });
   })
   .catch((err) => {
     console.log(err);
   });
+
+// * sockets events and handlers
+io.on("connection", (socket) => {
+  console.log("client connected!");
+  socket.on("shift-task", socketHanlder(io, socket).taskDND);
+  socket.on("disconnect", () => {
+    console.log("client disconnected!");
+  });
+});

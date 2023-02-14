@@ -1,7 +1,19 @@
 import cloudinary from "../utils/cloudinary.js";
+import User from "../Models/User.js";
 
 export const cloudinaryProfileUpload = async (req, res, next) => {
   try {
+    const user = await User.findOne({
+      $text: { $search: req.body.email, $caseSensitive: false },
+    });
+
+    if (user) {
+      return res.status(400).send({
+        error: true,
+        message: "User Already Exists!",
+      });
+    }
+
     console.log("body from cloudinary middleware : ", req.body);
     const { profileImage } = req.body;
     const result = await cloudinary.uploader.upload(profileImage, {
