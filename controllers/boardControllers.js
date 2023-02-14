@@ -485,7 +485,24 @@ const removeUserFromBoard = async (req, res) => {
 
     console.log("remove board  from user : ", userUpdateResult);
 
-    if (!boardUpdatedResult || !userUpdateResult) {
+    const task = await Task.findOne({
+      $and: [{ "users.user_id": user_id }, { admin: req.user._id }],
+    });
+
+    const taskUpdate = await Task.updateOne(
+      { _id: task._id },
+      {
+        $pull: {
+          users: {
+            user_id: user._id,
+            username: user.username,
+            profileImage: user.profileImage,
+          },
+        },
+      }
+    );
+
+    if (!boardUpdatedResult || !userUpdateResult || !taskUpdate) {
       return res.status(500).send({
         error: true,
         message: "User Remove failed!!",

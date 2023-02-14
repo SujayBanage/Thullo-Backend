@@ -18,6 +18,7 @@ import {
   getAllTasksByColumnId,
   taskDND,
   updateTaskName,
+  removeUserFromTask,
 } from "../controllers/taskController.js";
 import privateMiddleware from "../middleware/privateMiddleware.js";
 
@@ -46,7 +47,10 @@ taskRouter
   .route("/description")
   .patch(privateMiddleware, taskDescriptionUpdate);
 taskRouter.route("/label").patch(privateMiddleware, taskLableAdd);
-taskRouter.route("/user").patch(privateMiddleware, taskUserAdd);
+taskRouter
+  .route("/user")
+  .patch(privateMiddleware, taskUserAdd)
+  .delete(privateMiddleware, removeUserFromTask);
 taskRouter.route("/:task_id").get(privateMiddleware, getTaskById);
 taskRouter
   .route("/attachment/:attachment_id")

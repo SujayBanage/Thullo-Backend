@@ -12,6 +12,46 @@ import {
   checkUserExists,
 } from "../utils/checkExistance.js";
 
+const removeUserFromTask = async (req, res) => {
+  const { user_id, task_id } = req.body;
+  const { user } = await checkUserExists(user_id);
+  const { task } = await checkTaskExists(task_id);
+
+  if (!user || !task) {
+    return res.status(404).send({
+      message: "User/Task Not Found!",
+    });
+  }
+
+  if (!task.admin.equals(req.user._id)) {
+    return req.status(403).send({
+      message: "Not Authorized!",
+    });
+  }
+
+  try {
+    await Task.updateOne(
+      { _id: task._id },
+      {
+        $pull: {
+          users: {
+            user_id: user._id,
+            username: user.username,
+            profileImage: user.profileImage,
+          },
+        },
+      }
+    );
+  } catch (err) {
+    return res.status(500).send({
+      message: err.mesage,
+    });
+  }
+  return res.status(200).send({
+    message: "User Successfully Removed!",
+  });
+};
+
 const updateTaskName = async (req, res) => {
   const { task_id, name } = req.body;
   const { exists, task } = await checkTaskExists(task_id);
@@ -665,4 +705,5 @@ export {
   getAllTasksByColumnId,
   taskDND,
   updateTaskName,
+  removeUserFromTask,
 };
