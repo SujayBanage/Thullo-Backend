@@ -25,6 +25,7 @@ const io = new Server(httpServer, {
     preflightContinue: true,
   },
   transports: ["websocket"],
+  wsEngine: "ws",
 });
 
 app.use(
@@ -36,6 +37,7 @@ app.use(
     allowedHeaders: ["Content-Type", "authorization"],
   })
 );
+
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(
   express.json({
