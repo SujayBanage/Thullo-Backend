@@ -21,7 +21,8 @@ console.log("frontend url is : ", FRONTEND_URL);
 const io = new Server(httpServer, {
   cors: {
     origin: FRONTEND_URL,
-    methods: ["GET", "POST"],
+    methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
+    preflightContinue: true,
   },
 });
 
