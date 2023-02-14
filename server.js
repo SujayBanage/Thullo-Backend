@@ -25,7 +25,7 @@ const io = new Server(httpServer, {
     preflightContinue: true,
   },
   transports: ["websocket"],
-  wsEngine: "ws",
+  // wsEngine: "ws",
 });
 
 app.use(
