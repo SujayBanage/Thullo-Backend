@@ -12,6 +12,7 @@ import { FRONTEND_URL } from "./config.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import socketHanlder from "./socket.io.handlers.js";
+import helmet from "helmet";
 const app = express();
 const httpServer = createServer(app);
 const port = PORT || 3000;
@@ -27,6 +28,13 @@ const io = new Server(httpServer, {
   transports: ["websocket"],
   // wsEngine: "ws",
 });
+
+app.use(helmet());
+app.use(
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin",
+  })
+);
 
 app.use(
   cors({
