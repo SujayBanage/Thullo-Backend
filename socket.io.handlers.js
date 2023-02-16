@@ -10,7 +10,7 @@ const socketHanlder = (io, socket) => {
       task_id,
       fromTaskIndex,
       toTaskIndex,
-      board_id,
+      socket_id,
     }) => {
       const fromColumn = await checkColumnExists(fromColumnId);
       const toColumn = await checkColumnExists(toColumnId);
@@ -66,7 +66,7 @@ const socketHanlder = (io, socket) => {
           );
 
           if (result1 && result2 && result3) {
-            return io.to(socket.id).emit("shift-task-success", {
+            return io.to(socket_id).emit("shift-task-success", {
               message: "Task Shift Successfull!",
               fromColumnId,
               toColumnId,
@@ -74,11 +74,11 @@ const socketHanlder = (io, socket) => {
               toColumnTasks: result2.tasks,
             });
           }
-          return io.to(socket.id).emit("shift-task-fail", {
+          return io.to(socket_id).emit("shift-task-fail", {
             message: "Task Shift Failed!",
           });
         } catch (err) {
-          return io.to(socket.id).emit("shift-task-fail", {
+          return io.to(socket_id).emit("shift-task-fail", {
             message: "Task Shift Failed!",
           });
         }
@@ -102,14 +102,14 @@ const socketHanlder = (io, socket) => {
           );
 
           if (result) {
-            return io.to(socket.id).emit("shift-task-success", {
+            return io.to(socket_id).emit("shift-task-success", {
               message: "Task Shift Successfull!",
               fromColumnId,
               fromColumnTasks: result.tasks,
             });
           }
         } catch (err) {
-          return id.to(socket.id).emit("shift-task-fail", {
+          return id.to(socket_id).emit("shift-task-fail", {
             message: "Task Shift Failed!",
           });
         }
