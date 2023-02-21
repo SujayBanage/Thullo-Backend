@@ -237,7 +237,7 @@ const inviteUser = async (req, res) => {
   try {
     const Invitation = await Invite.create({
       from: req.user._id,
-      fromProfileImage: profileImage,
+      fromProfileImage: req.user.profileImage,
       to: invite_user._id,
       message: `${req.user.username} invited you to board ${board.name}`,
       board_id: board._id,
@@ -268,7 +268,7 @@ const getAllInvites = async (req, res) => {
       to: req.user._id,
     });
     console.log("all invites are : ", allInvites);
-    if (!allInvites || allInvites.length === 0) {
+    if (allInvites.length === 0) {
       return res.status(404).send({
         error: true,
         message: "Board Invites Not Found!",
@@ -363,6 +363,20 @@ const joinBoard = async (req, res) => {
       username: req.user.username,
       profileImage: req.user.profileImage,
     };
+
+    const alreadyExists = await Board.findOne(
+      { _id: board._id },
+      { users: { $elemMatch: userObj } }
+    );
+
+    console.log("user already exists ", alreadyExists);
+
+    if (alreadyExists.users.length >= 1) {
+      return res.status(401).send({
+        message: "Cannot Join Board Again!",
+        error: true,
+      });
+    }
 
     const boardUpdateResult = await Board.updateOne(
       { _id: board._id },
@@ -509,7 +523,7 @@ const removeUserFromBoard = async (req, res) => {
       });
     }
   } catch (err) {
-    return res.status(err).send({
+    return res.status(500).send({
       error: true,
       message: err.message,
     });
