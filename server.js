@@ -21,7 +21,7 @@ console.log("frontend url is : ", FRONTEND_URL);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: FRONTEND_URL,
+    origin: [FRONTEND_URL, "http://127.0.0.1:5173"],
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: true,
   },
@@ -39,7 +39,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: FRONTEND_URL,
+    origin: [FRONTEND_URL, "http://127.0.0.1:5173"],
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: false,
     allowedHeaders: ["Content-Type", "authorization"],
@@ -58,7 +58,7 @@ app.options(
   "*",
   cors({
     credentials: true,
-    origin: FRONTEND_URL,
+    origin: [FRONTEND_URL, "http://127.0.0.1:5173"],
     methods: ["PUT", "PATCH", "GET", "POST", "DELETE", "HEAD"],
     preflightContinue: false,
     allowedHeaders: ["Content-Type", "authorization"],
